@@ -1,7 +1,7 @@
 {
-  "name": "@megrulad-ge/service-skeleton",
+  "name": "@megrulad-ge/auth-service",
   "version": "0.0.1",
-  "description": "",
+  "description": "Authentication service for Megrulad-ge",
   "author": "n1md7",
   "private": false,
   "bin": {
@@ -43,6 +43,8 @@
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.5",
     "@nestjs/core-v8": "npm:@nestjs/core@^8.4.7",
+    "@nestjs/jwt": "^9.0.0",
+    "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.5",
     "@nestjs/platform-express-v8": "npm:@nestjs/platform-express@^8.4.7",
     "@nestjs/swagger": "^6.0.4",
@@ -62,6 +64,8 @@
     "ms": "^2.1.2",
     "nest-keycloak-connect": "^1.9.0",
     "node-cache": "^5.1.2",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pg": "^8.7.3",
     "prom-client": "^14.0.1",
     "ramda": "^0.27.2",
