@@ -3,7 +3,6 @@ declare global {
     interface ProcessEnv {
       ORIGIN: string;
       PORT: string;
-      AUTH_SERVICE_URL: string;
       DB_HOST: string;
       DB_PORT: string;
       DB_USERNAME: string;

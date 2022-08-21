@@ -15,12 +15,6 @@ export default Joi.object({
     .description('Comma-separated origin string list')
     .example('http://localhost:4200,http://localhost:3000'),
 
-  AUTH_SERVICE_URL: Joi.string()
-    .required()
-    .label('Auth service url')
-    .description('Auth service url')
-    .example('http://localhost:3000'),
-
   DB_HOST: Joi.string().required().label('Database host').example('localhost'),
   DB_PORT: Joi.number().required().label('Database port').example(5432),
   DB_USERNAME: Joi.string().required().label('Database user').example('db-user'),
