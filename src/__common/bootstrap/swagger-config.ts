@@ -1,6 +1,6 @@
 import { DocumentBuilder } from '@nestjs/swagger';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const packageJson = require('../../../package.json');
+const packageJson = require('../../../../package.json');
 
 export const swaggerConfig = new DocumentBuilder()
   .addBearerAuth({
@@ -11,7 +11,7 @@ export const swaggerConfig = new DocumentBuilder()
     description: 'Enter JWT auth token',
     in: 'header',
   })
-  .setTitle('Backend Service')
-  .setDescription('Backend service description')
+  .setTitle('Auth Service')
+  .setDescription('Authentication service')
   .setVersion(packageJson.version)
   .build();

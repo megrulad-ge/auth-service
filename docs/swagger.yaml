@@ -2,11 +2,36 @@ openapi: 3.0.0
 paths:
   /api/v1/auth/login:
     post:
-      operationId: AppController_login
+      operationId: AuthController_login
       parameters: []
       responses:
-        '201':
-          description: ''
+        '200':
+          description: Returns OK when successful
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  statusCode: 400
+                  message:
+                    - name should not be empty
+                    - name should be string
+                  error: Bad Request
+                properties:
+                  message:
+                    type: array
+                  statusCode:
+                    type: number
+                  error:
+                    type: string
+      tags: &ref_0
+        - auth
   /api/v1/profile:
     get:
       operationId: AppController_getProfile
@@ -33,9 +58,40 @@ paths:
                     example: alive
       tags:
         - Health
+  /api/v1/auth/register:
+    post:
+      operationId: AuthController_register
+      parameters: []
+      responses:
+        '201':
+          description: Returns OK when successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  statusCode: 400
+                  message:
+                    - name should not be empty
+                    - name should be string
+                  error: Bad Request
+                properties:
+                  message:
+                    type: array
+                  statusCode:
+                    type: number
+                  error:
+                    type: string
+      tags: *ref_0
 info:
-  title: Backend Service
-  description: Backend service description
+  title: Auth Service
+  description: Authentication service
   version: 0.0.1
   contact: {}
 tags: []
@@ -49,4 +105,14 @@ components:
       name: JWT
       description: Enter JWT auth token
       in: header
-  schemas: {}
+  schemas:
+    RegisterResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+        username:
+          type: string
+      required:
+        - uuid
+        - username

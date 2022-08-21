@@ -5,7 +5,7 @@ import { UserStatus } from '../user.type';
 import { Role } from './role.entity';
 
 @Entity({ name: 'users' })
-@Index(['uuid'], { unique: true })
+@Index(['uuid', 'username'], { unique: true })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;

@@ -7,13 +7,6 @@ import { SeederModule } from './seeder/seeder.module';
 import { SentryModule } from './sentry/sentry.module';
 
 @Module({
-  imports: [
-    ConfigModule,
-    LoggerModule,
-    RequestModule,
-    DatabaseModule,
-    SeederModule,
-    SentryModule,
-  ],
+  imports: [ConfigModule, LoggerModule, RequestModule, DatabaseModule, SeederModule, SentryModule],
 })
 export class SetupModule {}
