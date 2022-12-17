@@ -12,6 +12,7 @@ import { swaggerConfig } from './swagger-config';
 import { saveSwaggerDocument } from './swagger-save';
 import { bgCyan, bold } from 'chalk';
 import { Env } from '../env';
+import { UserInterceptor } from '../interceptors/user.interceptor';
 
 export const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
@@ -35,6 +36,7 @@ export const bootstrap = async () => {
   );
   app.useGlobalInterceptors(
     new RequestInterceptor(),
+    new UserInterceptor(),
     new ExceptionInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );

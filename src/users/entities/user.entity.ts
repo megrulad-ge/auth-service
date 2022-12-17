@@ -2,7 +2,7 @@ import { Entity, Generated, Index, OneToMany, PrimaryGeneratedColumn } from 'typ
 import { Column, UpdateDateColumn, CreateDateColumn } from '../../__common/decorators';
 
 import { UserStatus } from '../user.type';
-import { Role } from './role.entity';
+import { Role } from '../../roles/entities/role.entity';
 
 @Entity({ name: 'users' })
 @Index(['uuid', 'username'], { unique: true })

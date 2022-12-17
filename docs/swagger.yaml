@@ -1,37 +1,5 @@
 openapi: 3.0.0
 paths:
-  /api/v1/auth/login:
-    post:
-      operationId: AuthController_login
-      parameters: []
-      responses:
-        '200':
-          description: Returns OK when successful
-          content:
-            application/json:
-              schema:
-                type: object
-        '400':
-          description: Returns BAD_REQUEST when the payload is invalid or malformed.
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  statusCode: 400
-                  message:
-                    - name should not be empty
-                    - name should be string
-                  error: Bad Request
-                properties:
-                  message:
-                    type: array
-                  statusCode:
-                    type: number
-                  error:
-                    type: string
-      tags: &ref_0
-        - auth
   /api/v1/profile:
     get:
       operationId: AppController_getProfile
@@ -39,6 +7,8 @@ paths:
       responses:
         '200':
           description: ''
+      security:
+        - bearer: []
   /api/v1/health:
     get:
       operationId: HealthController_getHealth
@@ -62,6 +32,12 @@ paths:
     post:
       operationId: AuthController_register
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
       responses:
         '201':
           description: Returns OK when successful
@@ -88,6 +64,46 @@ paths:
                     type: number
                   error:
                     type: string
+      tags: &ref_0
+        - auth
+  /api/v1/auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Returns OK when successful
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  statusCode: 400
+                  message:
+                    - name should not be empty
+                    - name should be string
+                  error: Bad Request
+                properties:
+                  message:
+                    type: array
+                  statusCode:
+                    type: number
+                  error:
+                    type: string
+        '422':
+          description: Returns 422 when the user is not active
       tags: *ref_0
 info:
   title: Auth Service
@@ -106,6 +122,25 @@ components:
       description: Enter JWT auth token
       in: header
   schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username of the user
+          example: john
+        password:
+          type: string
+          description: The password of the user
+          example: password
+        confirmPassword:
+          type: string
+          description: The password confirmation of the user
+          example: password
+      required:
+        - username
+        - password
+        - confirmPassword
     RegisterResponse:
       type: object
       properties:
@@ -116,3 +151,17 @@ components:
       required:
         - uuid
         - username
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username of the user
+          example: john
+        password:
+          type: string
+          description: The password of the user
+          example: password
+      required:
+        - username
+        - password

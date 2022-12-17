@@ -1,5 +1,4 @@
-import { BadRequestException, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
 import { ApiBadRequestResponse } from '../__common/decorators';
 import { RegisterResponse } from './response/register.response';
 import { RegisterRequest } from './request/register.request';
@@ -8,6 +7,16 @@ import { PasswordUtils } from '../__common/utils';
 import { LoginRequest } from './request/login.request';
 import { AuthService } from './auth.service';
 import { LoginResponse } from './response/login.response';
+import { UserStatus } from '../users/user.type';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -18,7 +27,7 @@ export class AuthController {
   @ApiBadRequestResponse()
   @HttpCode(HttpStatus.CREATED)
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Returns OK when successful', type: RegisterResponse })
-  async register(payload: RegisterRequest): Promise<RegisterResponse> {
+  async register(@Body() payload: RegisterRequest): Promise<RegisterResponse> {
     if (!payload.passwordsMatch()) {
       throw new BadRequestException('Passwords do not match');
     }
@@ -32,20 +41,21 @@ export class AuthController {
   @Post('login')
   @ApiBadRequestResponse()
   @HttpCode(HttpStatus.OK)
+  @ApiUnprocessableEntityResponse({ description: 'Returns 422 when the user is not active' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Returns OK when successful', type: Object })
-  async login(payload: LoginRequest): Promise<LoginResponse> {
-    const userEntity = await this.usersService.getByUsername(payload.username);
-    if (!userEntity) throw new BadRequestException('Invalid credentials');
+  async login(@Body() payload: LoginRequest): Promise<LoginResponse> {
+    const user = await this.usersService.getByUsername(payload.username);
 
-    const hashedPassword = await PasswordUtils.hashPassword(payload.password);
-    const passwordsMatch = await PasswordUtils.hashCompare(hashedPassword, userEntity.password);
+    if (!user) throw new BadRequestException('Invalid credentials');
+    if (user.status !== UserStatus.ACTIVE) throw new UnprocessableEntityException('User is not active');
+
+    const passwordsMatch = await PasswordUtils.hashCompare(payload.password, user.password);
 
     if (!passwordsMatch) throw new BadRequestException('Invalid credentials');
 
-    // TODO: Add roles
-    const roles = ['user'];
-
-    const accessToken = this.authService.sign(userEntity.uuid, roles);
+    // TODO: implement me, roles and role mappings
+    const roles = ['user', 'default'];
+    const accessToken = this.authService.sign(user.uuid, roles);
 
     return {
       accessToken,

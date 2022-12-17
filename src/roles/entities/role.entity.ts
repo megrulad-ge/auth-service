@@ -1,8 +1,7 @@
-import { Entity, ManyToOne } from 'typeorm';
-import { PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Column, UpdateDateColumn, CreateDateColumn } from '../../__common/decorators';
-import { RoleStatus } from '../user.type';
-import { User } from './user.entity';
+import { RoleStatus } from '../../users/user.type';
+import { User } from '../../users/entities/user.entity';
 
 @Entity({ name: 'roles' })
 export class Role {

@@ -1,3 +1,5 @@
+import { CorsException } from '../exceptions/cors.exception';
+
 export const configureOrigin = (origin, callback) => {
   const corsWhitelist = process.env.ORIGIN.split(',');
   const originNotDefined = !origin;
@@ -7,5 +9,5 @@ export const configureOrigin = (origin, callback) => {
   const corsAllowed = originNotDefined || isLocalhost || isWhitelisted || isMegrulad;
 
   if (corsAllowed) return callback(null, true);
-  callback(new Error(`Origin [${origin}] Not allowed by CORS`));
+  callback(new CorsException(`Origin [${origin}] Not allowed by CORS`));
 };

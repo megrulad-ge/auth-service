@@ -14,8 +14,8 @@ export class PasswordUtils {
     });
   }
 
-  public static async hashCompare(password: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(password, hash);
+  public static async hashCompare(clearText: string, hashed: string): Promise<boolean> {
+    return bcrypt.compare(clearText, hashed);
   }
 
   public static randomChars(len: number): string {

@@ -9,9 +9,9 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
-import { LoggerService } from '../setup/logger/logger.service';
-import { RequestService } from '../setup/request/request.service';
-import { LoggerUtils } from '../setup/logger/logger.utils';
+import { LoggerService } from '../setup/logger';
+import { RequestService } from '../setup/request';
+import { LoggerUtils } from '../setup/logger';
 
 @Injectable()
 export class ExceptionInterceptor implements NestInterceptor {
