@@ -28,7 +28,7 @@ paths:
                     example: alive
       tags:
         - Health
-  /api/v1/auth/register:
+  /api/v1/sign/up:
     post:
       operationId: AuthController_register
       parameters: []
@@ -65,8 +65,8 @@ paths:
                   error:
                     type: string
       tags: &ref_0
-        - auth
-  /api/v1/auth/login:
+        - Authentication
+  /api/v1/sign/in:
     post:
       operationId: AuthController_login
       parameters: []
@@ -104,6 +104,35 @@ paths:
                     type: string
         '422':
           description: Returns 422 when the user is not active
+      tags: *ref_0
+  /api/v1/sign/out:
+    post:
+      operationId: AuthController_logout
+      parameters: []
+      responses:
+        '202':
+          description: Returns ACCEPTED when successful
+        '400':
+          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  statusCode: 400
+                  message:
+                    - name should not be empty
+                    - name should be string
+                  error: Bad Request
+                properties:
+                  message:
+                    type: array
+                  statusCode:
+                    type: number
+                  error:
+                    type: string
+        '401':
+          description: Returns 401 when token is invalid or expired
       tags: *ref_0
 info:
   title: Auth Service

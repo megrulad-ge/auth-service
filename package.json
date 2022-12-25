@@ -39,6 +39,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@drdgvhbh/postgres-error-codes": "^0.0.6",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.5",
     "@nestjs/common-v8": "npm:@nestjs/common@^8.4.7",
@@ -63,12 +64,14 @@
     "commander": "^4.1.1",
     "dotenv": "^10.0.0",
     "eventemitter2": "^6.4.6",
+    "i": "^0.3.7",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "keycloak-connect": "^15.1.0",
     "ms": "^2.1.2",
     "nest-keycloak-connect": "^1.9.0",
     "node-cache": "^5.1.2",
+    "npm": "^9.2.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.7.3",

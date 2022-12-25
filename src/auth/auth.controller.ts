@@ -1,4 +1,4 @@
-import { ApiResponse, ApiTags, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiUnauthorizedResponse, ApiUnprocessableEntityResponse } from '@nestjs/swagger';
 import { ApiBadRequestResponse } from '../__common/decorators';
 import { RegisterResponse } from './response/register.response';
 import { RegisterRequest } from './request/register.request';
@@ -18,12 +18,12 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 
-@ApiTags('auth')
-@Controller('auth')
+@ApiTags('Authentication')
+@Controller('sign')
 export class AuthController {
   constructor(private readonly usersService: UsersService, private readonly authService: AuthService) {}
 
-  @Post('register')
+  @Post('up')
   @ApiBadRequestResponse()
   @HttpCode(HttpStatus.CREATED)
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Returns OK when successful', type: RegisterResponse })
@@ -38,7 +38,7 @@ export class AuthController {
     return RegisterResponse.from(userEntity);
   }
 
-  @Post('login')
+  @Post('in')
   @ApiBadRequestResponse()
   @HttpCode(HttpStatus.OK)
   @ApiUnprocessableEntityResponse({ description: 'Returns 422 when the user is not active' })
@@ -53,8 +53,7 @@ export class AuthController {
 
     if (!passwordsMatch) throw new BadRequestException('Invalid credentials');
 
-    // TODO: implement me, roles and role mappings
-    const roles = ['user', 'default'];
+    const roles = user.roles.map(({ role }) => role.name);
     const accessToken = this.authService.sign(user.uuid, roles);
 
     return {
@@ -64,5 +63,14 @@ export class AuthController {
       refreshTokenExpiresIn: 3600,
       roles,
     };
+  }
+
+  @Post('out')
+  @ApiBadRequestResponse()
+  @HttpCode(HttpStatus.ACCEPTED)
+  @ApiUnauthorizedResponse({ description: 'Returns 401 when token is invalid or expired' })
+  @ApiResponse({ status: HttpStatus.ACCEPTED, description: 'Returns ACCEPTED when successful' })
+  async logout(): Promise<void> {
+    // TODO: Implement me, invalidate token, use local or Redis cache.
   }
 }

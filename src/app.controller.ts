@@ -1,8 +1,9 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/guards/auth.gueard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthUser } from './__common/decorators/user.decorator';
+import { UserClaims } from './users/user.type';
 
 @Controller()
 export class AppController {
@@ -11,7 +12,7 @@ export class AppController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get('profile')
-  getProfile(@AuthUser() user: unknown) {
+  getProfile(@AuthUser() user: UserClaims) {
     return user;
   }
 }

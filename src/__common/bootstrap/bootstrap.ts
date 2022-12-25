@@ -16,9 +16,9 @@ import { UserInterceptor } from '../interceptors/user.interceptor';
 
 export const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
-  const logger = app.get(LoggerService);
-  const config = app.get(ConfigService);
-  subscribeNodeSignals(logger);
+  const loggerService = app.get(LoggerService);
+  const configService = app.get(ConfigService);
+  subscribeNodeSignals(loggerService);
   app.enableCors({
     origin: configureOrigin,
     methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
@@ -26,7 +26,7 @@ export const bootstrap = async () => {
     exposedHeaders: 'Authorization',
     credentials: true,
   });
-  app.useLogger(logger);
+  app.useLogger(loggerService);
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -54,7 +54,7 @@ export const bootstrap = async () => {
       persistAuthorization: true,
     },
   });
-  const appPort = parseInt(config.get('PORT'), 10);
+  const appPort = parseInt(configService.get('PORT'), 10);
   app.getHttpAdapter().getInstance().disable('x-powered-by');
   await app.listen(appPort, '0.0.0.0', async () => {
     const url = await app.getUrl();
@@ -66,6 +66,6 @@ export const bootstrap = async () => {
     `);
     if (Env.isDev) return console.log(devText);
 
-    logger.log(`Application started at: ${url}`, 'Bootstrap');
+    loggerService.log(`Application started at: ${url}`, 'Bootstrap');
   });
 };

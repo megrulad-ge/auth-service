@@ -6,7 +6,6 @@ import { RoleStatus } from '../users/user.type';
 
 @Injectable()
 export class RolesService {
-  // TODO: create another entity for role mappings and modify current entity accordingly
   constructor(@InjectRepository(Role) private readonly roleRepository: Repository<Role>) {}
 
   findByPk(id: number): Promise<Role> {

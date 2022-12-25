@@ -1,14 +1,14 @@
-import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Column, UpdateDateColumn, CreateDateColumn } from '../../__common/decorators';
 import { RoleStatus } from '../../users/user.type';
-import { User } from '../../users/entities/user.entity';
+import { RoleMapping } from '../../users/entities/user-role.entity';
 
 @Entity({ name: 'roles' })
 export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 32 })
+  @Column({ type: 'varchar', length: 32, unique: true })
   name: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
@@ -17,8 +17,8 @@ export class Role {
   @Column({ type: 'enum', enum: RoleStatus, default: RoleStatus.OPEN })
   status: RoleStatus;
 
-  @ManyToOne(() => User, (user) => user.roles)
-  user: User;
+  @OneToMany(() => RoleMapping, (role) => role.user)
+  roles: RoleMapping[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

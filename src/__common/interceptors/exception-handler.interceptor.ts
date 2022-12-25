@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   CallHandler,
   ExecutionContext,
   HttpException,
@@ -12,6 +13,8 @@ import { catchError, Observable } from 'rxjs';
 import { LoggerService } from '../setup/logger';
 import { RequestService } from '../setup/request';
 import { LoggerUtils } from '../setup/logger';
+import { QueryFailedError } from 'typeorm';
+import { PG_UNIQUE_VIOLATION } from '@drdgvhbh/postgres-error-codes';
 
 @Injectable()
 export class ExceptionInterceptor implements NestInterceptor {
@@ -42,6 +45,13 @@ export class ExceptionInterceptor implements NestInterceptor {
         switch (true) {
           case error instanceof HttpException:
             throw error;
+          // TypeORM exception
+          case error instanceof QueryFailedError: {
+            const typeORMError = error as QueryFailedError & { code: string; detail: string };
+            // Duplicated key
+            if (typeORMError.code === PG_UNIQUE_VIOLATION) throw new BadRequestException(typeORMError.detail);
+            throw new InternalServerErrorException();
+          }
           case error.name === 'EntityNotFoundError':
             throw new NotFoundException(error.message);
           case error.isAxiosError:
