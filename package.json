@@ -80,7 +80,7 @@
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.19",
-    "@nestjs/cli": "^8.2.8",
+    "@nestjs/cli": "^9.1.8",
     "@nestjs/schematics": "^8.0.11",
     "@nestjs/testing": "^9.0.5",
     "@types/cache-manager": "^3.4.3",
@@ -115,7 +115,7 @@
     "ts-jest": "^28.0.7",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^3.14.1",
+    "tsconfig-paths": "^4.1.2",
     "typeorm-uml": "^1.6.5",
     "typeorm-v2": "npm:typeorm@^0.2.45",
     "typescript": "^4.7.4"
