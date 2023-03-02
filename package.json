@@ -62,7 +62,7 @@
     "dotenv": "^10.0.0",
     "eventemitter2": "^6.4.6",
     "joi": "^17.6.0",
-    "keycloak-connect": "^15.1.0",
+    "keycloak-connect": "^21.0.1",
     "ms": "^2.1.2",
     "nest-keycloak-connect": "^1.9.0",
     "node-cache": "^5.1.2",
