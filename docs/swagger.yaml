@@ -30,7 +30,7 @@ paths:
         - Health
   /api/v1/sign/up:
     post:
-      operationId: AuthController_register
+      operationId: AuthController_signUp
       parameters: []
       requestBody:
         required: true
@@ -68,7 +68,7 @@ paths:
         - Authentication
   /api/v1/sign/in:
     post:
-      operationId: AuthController_login
+      operationId: AuthController_signIn
       parameters: []
       requestBody:
         required: true
@@ -102,16 +102,47 @@ paths:
                     type: number
                   error:
                     type: string
+        '401':
+          description: ''
         '422':
           description: Returns 422 when the user is not active
       tags: *ref_0
   /api/v1/sign/out:
     post:
-      operationId: AuthController_logout
+      operationId: AuthController_signOut
       parameters: []
       responses:
         '202':
-          description: Returns ACCEPTED when successful
+          description: ''
+        '400':
+          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  statusCode: 400
+                  message:
+                    - name should not be empty
+                    - name should be string
+                  error: Bad Request
+                properties:
+                  message:
+                    type: array
+                  statusCode:
+                    type: number
+                  error:
+                    type: string
+      tags: *ref_0
+      security:
+        - bearer: []
+  /api/v1/session/refresh:
+    post:
+      operationId: SessionController_refresh
+      parameters: []
+      responses:
+        '200':
+          description: Returns OK when successful
         '400':
           description: Returns BAD_REQUEST when the payload is invalid or malformed.
           content:
@@ -133,11 +164,102 @@ paths:
                     type: string
         '401':
           description: Returns 401 when token is invalid or expired
-      tags: *ref_0
+      tags: &ref_1
+        - Session
+      security:
+        - bearer: []
+  /api/v1/session/extend:
+    post:
+      operationId: SessionController_extend
+      parameters: []
+      responses:
+        '200':
+          description: Returns OK when successful
+        '400':
+          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  statusCode: 400
+                  message:
+                    - name should not be empty
+                    - name should be string
+                  error: Bad Request
+                properties:
+                  message:
+                    type: array
+                  statusCode:
+                    type: number
+                  error:
+                    type: string
+        '401':
+          description: Returns 401 when refreshToken is invalid or expired
+      tags: *ref_1
+  /api/v1/client:
+    post:
+      operationId: ClientController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClientDto'
+      responses:
+        '201':
+          description: ''
+    get:
+      operationId: ClientController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+  /api/v1/client/{id}:
+    get:
+      operationId: ClientController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+    patch:
+      operationId: ClientController_update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateClientDto'
+      responses:
+        '200':
+          description: ''
+    delete:
+      operationId: ClientController_remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
 info:
   title: Auth Service
   description: Authentication service
-  version: 0.0.1
+  version: '1.0'
   contact: {}
 tags: []
 servers: []
@@ -194,3 +316,9 @@ components:
       required:
         - username
         - password
+    CreateClientDto:
+      type: object
+      properties: {}
+    UpdateClientDto:
+      type: object
+      properties: {}

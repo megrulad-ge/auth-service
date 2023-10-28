@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/guards/auth.gueard';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { AuthUser } from './__common/decorators/user.decorator';
+import { AuthUser } from '/common/decorators/user.decorator';
 import { UserClaims } from './users/user.type';
 
 @Controller()

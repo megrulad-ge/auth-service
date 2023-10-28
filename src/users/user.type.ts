@@ -1,13 +1,13 @@
 export enum UserStatus {
-  ACTIVE = 'active',
-  PENDING = 'pending',
-  SUSPENDED = 'suspended',
-  DELETED = 'deleted',
+  ACTIVE = 'ACTIVE',
+  PENDING = 'PENDING',
+  SUSPENDED = 'SUSPENDED',
+  REMOVED = 'REMOVED',
 }
 
 export enum RoleStatus {
-  LOCKED,
-  OPEN,
+  LOCKED = 'LOCKED',
+  OPEN = 'OPEN',
 }
 
 export type UserClaims = {

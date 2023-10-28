@@ -1,9 +1,9 @@
 import { Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Column, UpdateDateColumn, CreateDateColumn } from '../../__common/decorators';
+import { Column, UpdateDateColumn, CreateDateColumn } from '../../common/decorators';
 import { RoleStatus } from '../../users/user.type';
 import { RoleMapping } from '../../users/entities/user-role.entity';
 
-@Entity({ name: 'roles' })
+@Entity({ name: 'Roles' })
 export class Role {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,7 +14,7 @@ export class Role {
   @Column({ type: 'varchar', length: 255, nullable: true })
   description: string;
 
-  @Column({ type: 'enum', enum: RoleStatus, default: RoleStatus.OPEN })
+  @Column({ type: 'varchar', length: 16, default: RoleStatus.OPEN })
   status: RoleStatus;
 
   @OneToMany(() => RoleMapping, (role) => role.user)

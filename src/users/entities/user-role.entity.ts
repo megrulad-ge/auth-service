@@ -1,9 +1,9 @@
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { CreateDateColumn } from '../../__common/decorators';
+import { CreateDateColumn } from '/common/decorators';
 import { User } from './user.entity';
-import { Role } from '../../roles/entities/role.entity';
+import { Role } from '/src/roles/entities/role.entity';
 
-@Entity({ name: 'role_mapping' })
+@Entity({ name: 'RolaMappings' })
 export class RoleMapping {
   @PrimaryGeneratedColumn()
   id: number;
