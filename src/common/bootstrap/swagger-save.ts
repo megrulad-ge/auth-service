@@ -5,8 +5,8 @@ import fs from 'fs';
 
 export const saveSwaggerDocument = (document: OpenAPIObject) => {
   try {
-    const yamlString = yaml.dump(document);
-    fs.writeFileSync('./docs/swagger.yaml', yamlString);
+    const swaggerYaml = yaml.dump(document, { skipInvalid: true });
+    fs.writeFileSync('./docs/swagger.yaml', swaggerYaml, 'utf8');
   } catch (error) {
     Logger.error(`Error while writing swagger.yaml file: ${error}`, 'Bootstrap');
   }

@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Seed } from '../entity/seeder.entity';
 import { Seeds } from '../abstract/seeds.service';
 import { Role } from '/src/roles/entities/role.entity';
-import { RoleMapping } from '/src/users/entities/user-role.entity';
+import { RoleMapping } from '/src/users/entities/role-mapping.entity';
 import { User } from '/src/users/entities/user.entity';
 import { UserStatus } from '/src/users/user.type';
 import * as process from 'process';

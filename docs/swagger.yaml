@@ -40,13 +40,13 @@ paths:
               $ref: '#/components/schemas/RegisterRequest'
       responses:
         '201':
-          description: Returns OK when successful
+          description: Returns CREATED when the resource successfully created.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegisterResponse'
+                $ref: '#/components/schemas/SignUpResponse'
         '400':
-          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          description: Returns 400 when the payload is invalid or malformed.
           content:
             application/json:
               schema:
@@ -78,13 +78,13 @@ paths:
               $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
-          description: Returns OK when successful
+          description: Returns SUCCESS when the request is successful.
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/SignInResponse'
         '400':
-          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          description: Returns 400 when the payload is invalid or malformed.
           content:
             application/json:
               schema:
@@ -103,7 +103,7 @@ paths:
                   error:
                     type: string
         '401':
-          description: ''
+          description: Returns 401 when the credentials are invalid
         '422':
           description: Returns 422 when the user is not active
       tags: *ref_0
@@ -113,26 +113,23 @@ paths:
       parameters: []
       responses:
         '202':
-          description: ''
-        '400':
-          description: Returns BAD_REQUEST when the payload is invalid or malformed.
+          description: Returns 202 when the token is invalidated successfully
+        '404':
+          description: Returns 404 when the token is not found
           content:
             application/json:
               schema:
                 type: object
-                example:
-                  statusCode: 400
-                  message:
-                    - name should not be empty
-                    - name should be string
-                  error: Bad Request
                 properties:
-                  message:
-                    type: array
                   statusCode:
                     type: number
+                    example: 404
                   error:
                     type: string
+                    example: Not Found
+                  message:
+                    type: string
+                    example: 'The resource with #7 is not available'
       tags: *ref_0
       security:
         - bearer: []
@@ -142,7 +139,11 @@ paths:
       parameters: []
       responses:
         '200':
-          description: Returns OK when successful
+          description: Returns SUCCESS when the request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshResponse'
         '400':
           description: Returns BAD_REQUEST when the payload is invalid or malformed.
           content:
@@ -172,6 +173,12 @@ paths:
     post:
       operationId: SessionController_extend
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtendRequest'
       responses:
         '200':
           description: Returns OK when successful
@@ -197,65 +204,6 @@ paths:
         '401':
           description: Returns 401 when refreshToken is invalid or expired
       tags: *ref_1
-  /api/v1/client:
-    post:
-      operationId: ClientController_create
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateClientDto'
-      responses:
-        '201':
-          description: ''
-    get:
-      operationId: ClientController_findAll
-      parameters: []
-      responses:
-        '200':
-          description: ''
-  /api/v1/client/{id}:
-    get:
-      operationId: ClientController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-    patch:
-      operationId: ClientController_update
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateClientDto'
-      responses:
-        '200':
-          description: ''
-    delete:
-      operationId: ClientController_remove
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
 info:
   title: Auth Service
   description: Authentication service
@@ -292,13 +240,15 @@ components:
         - username
         - password
         - confirmPassword
-    RegisterResponse:
+    SignUpResponse:
       type: object
       properties:
         uuid:
-          type: string
+          type: uuid
+          example: d0f5c2c0-0f8a-4f1a-8f0a-2b5b8a0e1c1e
         username:
           type: string
+          example: user-123
       required:
         - uuid
         - username
@@ -316,9 +266,52 @@ components:
       required:
         - username
         - password
-    CreateClientDto:
+    SignInResponse:
       type: object
-      properties: {}
-    UpdateClientDto:
+      properties:
+        accessToken:
+          type: string
+          example: aaa.bbb.ccc
+        expiresIn:
+          type: number
+          example: 3600
+        refreshToken:
+          type: string
+          example: aaa.bbb.ccc
+        refreshTokenExpiresIn:
+          type: number
+          example: 86400
+        roles:
+          example:
+            - Admin
+            - User
+            - Guest
+          type: array
+          items:
+            type: string
+      required:
+        - accessToken
+        - expiresIn
+        - refreshToken
+        - refreshTokenExpiresIn
+        - roles
+    RefreshResponse:
       type: object
-      properties: {}
+      properties:
+        accessToken:
+          type: string
+          example: aaa.bbb.ccc
+        expiresIn:
+          type: number
+          example: 3600
+      required:
+        - accessToken
+        - expiresIn
+    ExtendRequest:
+      type: object
+      properties:
+        uuid:
+          type: uuid
+          example: d0f5c2c0-0f8a-4f1a-8f0a-2b5b8a0e1c1e
+      required:
+        - uuid

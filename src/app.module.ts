@@ -6,12 +6,11 @@ import { UsersModule } from './users/users.module';
 import { AppController } from './app.controller';
 import { RolesModule } from './roles/roles.module';
 import { HttpExceptionsFilter } from '/common/filters/exception.filter';
-import { APP_FILTER } from '@nestjs/core';
 import { SessionModule } from './session/session.module';
-import { ClientModule } from './client/client.module';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
-  imports: [SetupModule, HealthModule, AuthModule, UsersModule, RolesModule, SessionModule, ClientModule],
+  imports: [SetupModule, HealthModule, AuthModule, UsersModule, RolesModule, SessionModule],
   controllers: [AppController],
   providers: [
     {

@@ -1,5 +1,5 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { AppModule } from '../../app.module';
+import { AppModule } from '/src/app.module';
 import { LoggerService } from '../setup/logger';
 import { ConfigService } from '@nestjs/config';
 import { subscribeNodeSignals } from './signals';
@@ -59,7 +59,7 @@ export const bootstrap = async () => {
   await app.listen(appPort, '0.0.0.0', async () => {
     const url = await app.getUrl();
     const devText = bold(`
-        Application started at: ${url}
+        Authentication service started at: ${url}
         Swagger docs: ${url}/docs
         Mode: ${bgCyan(Env.NodeEnv)}
         Pid: ${process.pid}

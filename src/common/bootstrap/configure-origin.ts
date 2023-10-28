@@ -1,6 +1,7 @@
 import { CorsException } from '../exceptions/cors.exception';
+import { CustomOrigin } from '@nestjs/common/interfaces/external/cors-options.interface';
 
-export const configureOrigin = (origin, callback) => {
+export const configureOrigin: CustomOrigin = (requestOrigin, callback) => {
   const corsWhitelist = process.env.ORIGIN.split(',');
   const originNotDefined = !origin;
   const isWhitelisted = corsWhitelist.indexOf(origin) !== -1;

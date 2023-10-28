@@ -6,7 +6,7 @@ import { InsertDefaultRoles } from './seeds/InsertDefaultRoles';
 import { Role } from '/src/roles/entities/role.entity';
 import { CreateSuperUser } from '/common/setup/seeder/seeds/CreateSuperUser';
 import { User } from '/src/users/entities/user.entity';
-import { RoleMapping } from '/src/users/entities/user-role.entity';
+import { RoleMapping } from '/src/users/entities/role-mapping.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Seed, Role, User, RoleMapping])],

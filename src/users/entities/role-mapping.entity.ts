@@ -3,7 +3,7 @@ import { CreateDateColumn } from '/common/decorators';
 import { User } from './user.entity';
 import { Role } from '/src/roles/entities/role.entity';
 
-@Entity({ name: 'RolaMappings' })
+@Entity({ name: 'RoleMappings' })
 export class RoleMapping {
   @PrimaryGeneratedColumn()
   id: number;

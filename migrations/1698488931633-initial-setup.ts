@@ -22,7 +22,7 @@ export class InitialSetup1698488931633 implements MigrationInterface {
       ) ENGINE = InnoDB
     `);
     await queryRunner.query(`
-      CREATE TABLE \`RolaMappings\`
+      CREATE TABLE \`RoleMappings\`
       (
         \`id\`        int          NOT NULL AUTO_INCREMENT,
         \`createdAt\` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
@@ -54,22 +54,22 @@ export class InitialSetup1698488931633 implements MigrationInterface {
       ) ENGINE = InnoDB
     `);
     await queryRunner.query(`
-      ALTER TABLE \`RolaMappings\`
+      ALTER TABLE \`RoleMappings\`
         ADD CONSTRAINT \`FK_56412b41a045780624f67694160\` FOREIGN KEY (\`roleId\`) REFERENCES \`Roles\` (\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION
     `);
     await queryRunner.query(`
-      ALTER TABLE \`RolaMappings\`
+      ALTER TABLE \`RoleMappings\`
         ADD CONSTRAINT \`FK_922223fc5063e34f2b6b9cb82ea\` FOREIGN KEY (\`userId\`) REFERENCES \`Users\` (\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION
     `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      ALTER TABLE \`RolaMappings\`
+      ALTER TABLE \`RoleMappings\`
         DROP FOREIGN KEY \`FK_922223fc5063e34f2b6b9cb82ea\`
     `);
     await queryRunner.query(`
-      ALTER TABLE \`RolaMappings\`
+      ALTER TABLE \`RoleMappings\`
         DROP FOREIGN KEY \`FK_56412b41a045780624f67694160\`
     `);
     await queryRunner.query(`
@@ -83,7 +83,7 @@ export class InitialSetup1698488931633 implements MigrationInterface {
     `);
 
     await queryRunner.query(`
-      DROP TABLE \`RolaMappings\`
+      DROP TABLE \`RoleMappings\`
     `);
     await queryRunner.query(`
       DROP INDEX \`IDX_3c3ab3f49a87e6ddb607f3c494\` ON \`Users\`

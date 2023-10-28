@@ -1,7 +1,8 @@
 import { Entity, Generated, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Column, UpdateDateColumn, CreateDateColumn } from '/common/decorators';
 import { UserStatus } from '../user.type';
-import { RoleMapping } from './user-role.entity';
+import { RoleMapping } from './role-mapping.entity';
+import { Session } from '/src/session/entities/session.entity';
 
 @Entity({ name: 'Users' })
 @Index(['uuid', 'username'], { unique: true })
@@ -28,9 +29,28 @@ export class User {
   @OneToMany(() => RoleMapping, (role) => role.user, { nullable: true })
   roles: RoleMapping[];
 
+  @OneToMany(() => Session, (session) => session.user, { nullable: true })
+  sessions: Session[];
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  isActive(): boolean {
+    return this.status === UserStatus.ACTIVE;
+  }
+
+  isPending(): boolean {
+    return this.status === UserStatus.PENDING;
+  }
+
+  isSuspended(): boolean {
+    return this.status === UserStatus.SUSPENDED;
+  }
+
+  isRemoved(): boolean {
+    return this.status === UserStatus.REMOVED;
+  }
 }
