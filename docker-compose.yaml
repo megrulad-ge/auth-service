@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.2.0
+    container_name: mysql.megrulad.ge
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: authentication
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: auth
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    expose:
+      - "3306"
+      - "33060"

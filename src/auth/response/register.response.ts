@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 export class RegisterResponse {
+  @Exclude() id;
+  @Exclude() password;
+  @Exclude() createdAt;
+  @Exclude() updatedAt;
+  @Exclude() status;
+
   @ApiProperty()
   uuid: string;
 

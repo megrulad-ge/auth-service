@@ -1,10 +1,9 @@
 import { Entity, Generated, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Column, UpdateDateColumn, CreateDateColumn } from '../../__common/decorators';
-
+import { Column, UpdateDateColumn, CreateDateColumn } from '/common/decorators';
 import { UserStatus } from '../user.type';
-import { Role } from './role.entity';
+import { RoleMapping } from './user-role.entity';
 
-@Entity({ name: 'users' })
+@Entity({ name: 'Users' })
 @Index(['uuid', 'username'], { unique: true })
 export class User {
   @PrimaryGeneratedColumn()
@@ -14,17 +13,20 @@ export class User {
   @Column({ type: 'uuid' })
   uuid: string;
 
-  @Column({ type: 'varchar', length: 64 })
+  @Column({ type: 'varchar', length: 64, unique: true })
   username: string;
+
+  @Column({ type: 'varchar', length: 64, unique: true, nullable: true, default: null })
+  email: string | null;
 
   @Column({ type: 'varchar', length: 1024 })
   password: string;
 
-  @Column({ type: 'enum', enum: UserStatus, default: UserStatus.PENDING })
+  @Column({ type: 'varchar', length: 16, default: UserStatus.PENDING })
   status: UserStatus;
 
-  @OneToMany(() => Role, (role) => role.user, { nullable: true })
-  roles: Role[];
+  @OneToMany(() => RoleMapping, (role) => role.user, { nullable: true })
+  roles: RoleMapping[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
