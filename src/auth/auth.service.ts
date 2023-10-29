@@ -14,7 +14,7 @@ export class AuthService {
    * Expiration is in seconds
    */
   signAccessToken(uuid: string, roles: string[]): ReturnType {
-    const expiresIn = process.env.ACCESS_TOKEN_EXPIRES_IN || '1h';
+    const expiresIn = process.env.ACCESS_TOKEN_EXPIRES_IN;
     const options: SignOptions = {
       algorithm: 'RS256',
       expiresIn,
@@ -38,7 +38,7 @@ export class AuthService {
    * Expiration is in seconds
    */
   getRefreshToken() {
-    const expiresIn = process.env.REFRESH_TOKEN_EXPIRES_IN || '1d';
+    const expiresIn = process.env.REFRESH_TOKEN_EXPIRES_IN;
     const value = randomUUID();
 
     return {

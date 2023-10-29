@@ -1,7 +1,9 @@
 import { Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Column, UpdateDateColumn, CreateDateColumn } from '../../common/decorators';
-import { RoleStatus } from '../../users/user.type';
-import { RoleMapping } from '../../users/entities/role-mapping.entity';
+import { Column } from '/common/decorators/column.decorator';
+import { CreateDateColumn } from '/common/decorators/create-date-column.decorator';
+import { UpdateDateColumn } from '/common/decorators/update-date-column.decorator';
+import { RoleStatus } from '/src/users/user.type';
+import { RoleMapping } from '/src/users/entities/role-mapping.entity';
 
 @Entity({ name: 'Roles' })
 export class Role {

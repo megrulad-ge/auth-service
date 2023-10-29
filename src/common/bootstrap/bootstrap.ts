@@ -34,10 +34,10 @@ export const bootstrap = async () => {
     }),
   );
   app.useGlobalInterceptors(
-    new RequestInterceptor(),
+    new RequestInterceptor(), // Important to be 1st, {CtxLogger} is injected here
     new UserInterceptor(),
     new ExceptionInterceptor(),
-    new ClassSerializerInterceptor(app.get(Reflector)),
+    new ClassSerializerInterceptor(app.get(Reflector)), // To make sure @Exclude() works on responses
   );
   app.setGlobalPrefix('/api');
   app.enableVersioning({

@@ -1,4 +1,4 @@
 import { registerAs } from '@nestjs/config';
-import { ormConfig } from './orm.config';
+import { getConfig } from './orm.config';
 
-export default registerAs('database', () => ormConfig);
+export default registerAs('database', () => getConfig());

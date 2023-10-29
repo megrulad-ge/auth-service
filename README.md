@@ -70,3 +70,16 @@ Show migration status
 # This will show the status of migrations
 npm run migration:show
 ```
+
+### Asymmetric key pairs
+
+Generate keys
+
+```bash
+# This will generate a key pair in `.keys` directory
+# It will skip the process if the keys already exist
+npm run gen:key-pairs
+
+# This will generate and replace the key pair in `.keys` directory if it already exists
+npm run re-gen:key-pairs
+```

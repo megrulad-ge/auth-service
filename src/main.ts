@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { bootstrap } from './common/bootstrap';
+import { bootstrap } from '/common/bootstrap';
 import { Logger } from '@nestjs/common';
 
 (async () => {

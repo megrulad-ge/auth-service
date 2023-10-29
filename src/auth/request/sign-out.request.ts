@@ -7,4 +7,12 @@ export class SignOutRequest {
   })
   @IsUUID()
   refreshToken: string;
+
+  constructor(payload: Partial<SignOutRequest>) {
+    Object.assign(this, payload);
+  }
+
+  static from(payload: Partial<SignOutRequest>): SignOutRequest {
+    return new SignOutRequest(payload);
+  }
 }

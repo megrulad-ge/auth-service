@@ -45,7 +45,7 @@ export class InitialSetup1698488931633 implements MigrationInterface {
       ) ENGINE = InnoDB
     `);
     await queryRunner.query(`
-      CREATE TABLE \`seeds\`
+      CREATE TABLE \`Seeds\`
       (
         \`id\`        int          NOT NULL AUTO_INCREMENT,
         \`name\`      varchar(128) NOT NULL,
@@ -73,7 +73,7 @@ export class InitialSetup1698488931633 implements MigrationInterface {
         DROP FOREIGN KEY \`FK_56412b41a045780624f67694160\`
     `);
     await queryRunner.query(`
-      DROP TABLE \`seeds\`
+      DROP TABLE \`Seeds\`
     `);
     await queryRunner.query(`
       DROP INDEX \`IDX_8eadedb8470c92966389ecc216\` ON \`Roles\`

@@ -21,4 +21,12 @@ export class SignInRequest {
     example: 'password',
   })
   password: string;
+
+  constructor(payload: Partial<SignInRequest>) {
+    Object.assign(this, payload);
+  }
+
+  static from(payload: Partial<SignInRequest>): SignInRequest {
+    return new SignInRequest(payload);
+  }
 }

@@ -1,6 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
-import { UpdateDateColumn } from '/common/decorators';
+import { EnvSpecificDecoratorValue } from '/common/decorators/environment-specific-column.decorator';
 import { User } from '/src/users/entities/user.entity';
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column } from '/common/decorators/column.decorator';
+import { CreateDateColumn } from '/common/decorators/create-date-column.decorator';
+import { UpdateDateColumn } from '/common/decorators/update-date-column.decorator';
 
 @Entity({ name: 'Sessions' })
 export class Session {
@@ -16,7 +19,7 @@ export class Session {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 
-  @Column({ type: 'timestamp', comment: 'Will update on every "extend"' })
+  @Column(EnvSpecificDecoratorValue({ type: 'timestamp', comment: 'Will update on every "extend"' }))
   expiresAt: Date;
 
   @Column({ type: 'text' })

@@ -1,51 +1,25 @@
-import {
-  CallHandler,
-  ExecutionContext,
-  HttpException,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-  NestInterceptor,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
-import { RequestService } from '../setup/request';
-import { QueryFailedError } from 'typeorm';
+import { Env } from '/common/env';
 
 @Injectable()
 export class ExceptionInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
-    const requestService = new RequestService(request);
-    const logger = new Logger(requestService.getRequestId());
+    const logger = request.logger as Logger;
 
     return next.handle().pipe(
       catchError((error) => {
-        logger.error(
-          JSON.stringify({
-            message: error.message,
-            stack: error.stack,
-            name: error.name,
-          }),
-          'ExceptionInterceptor',
-        );
+        logger.error(this.formatError(error) + '\n' + error.stack);
 
-        switch (true) {
-          case error instanceof HttpException:
-            throw error;
-          // TypeORM exception
-          case error instanceof QueryFailedError: {
-            const typeORMError = error as QueryFailedError & { code: string; detail: string };
-            throw new UnprocessableEntityException({
-              message: typeORMError.message,
-              code: typeORMError.code,
-              detail: typeORMError.detail,
-            });
-          }
-          default:
-            throw new InternalServerErrorException();
-        }
+        throw error;
       }),
     );
+  }
+
+  private formatError(error: any) {
+    if (Env.isProd) return JSON.stringify(error);
+
+    return JSON.stringify(error, null, 2);
   }
 }

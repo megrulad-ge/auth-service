@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { config } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { driver } from './orm.config'; // Use relative path here since it is consumed by TypeORM directly.
 
 /**
  * This env file parsing is for development only.
@@ -17,15 +18,14 @@ config({ path: '.env.development' });
  * Unlike `orm.config.ts` where NestJS/TypeORM is handling that part.
  */
 export default new DataSource({
-  type: 'mysql',
+  type: driver,
+  logging: 'all',
+  host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
   entities: [join(process.cwd(), '/dist/**/*.entity.js'), join(process.cwd(), '/dist/**/**/*.entity.js')],
-  logging: 'all',
-  migrations: {
-    directory: join(process.cwd(), '/migrations/*.ts'),
-  },
+  migrations: { directory: join(process.cwd(), '/migrations/*.ts') },
+  migrationsTableName: 'Migrations',
 } as DataSourceOptions);

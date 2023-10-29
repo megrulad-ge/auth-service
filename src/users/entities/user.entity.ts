@@ -1,8 +1,10 @@
 import { Entity, Generated, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Column, UpdateDateColumn, CreateDateColumn } from '/common/decorators';
 import { UserStatus } from '../user.type';
 import { RoleMapping } from './role-mapping.entity';
 import { Session } from '/src/session/entities/session.entity';
+import { Column } from '/common/decorators/column.decorator';
+import { CreateDateColumn } from '/common/decorators/create-date-column.decorator';
+import { UpdateDateColumn } from '/common/decorators/update-date-column.decorator';
 
 @Entity({ name: 'Users' })
 @Index(['uuid', 'username'], { unique: true })

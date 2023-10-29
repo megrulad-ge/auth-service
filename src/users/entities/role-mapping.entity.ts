@@ -1,5 +1,5 @@
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { CreateDateColumn } from '/common/decorators';
+import { CreateDateColumn } from '/common/decorators/create-date-column.decorator';
 import { User } from './user.entity';
 import { Role } from '/src/roles/entities/role.entity';
 

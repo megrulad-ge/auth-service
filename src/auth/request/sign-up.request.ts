@@ -32,6 +32,14 @@ export class SignUpRequest {
   })
   confirmPassword: string;
 
+  constructor(payload: Partial<SignUpRequest>) {
+    Object.assign(this, payload);
+  }
+
+  static from(payload: Partial<SignUpRequest>): SignUpRequest {
+    return new SignUpRequest(payload);
+  }
+
   passwordsMatch(): boolean {
     return this.password === this.confirmPassword;
   }
