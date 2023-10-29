@@ -37,7 +37,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegisterRequest'
+              $ref: '#/components/schemas/SignUpRequest'
       responses:
         '201':
           description: Returns CREATED when the resource successfully created.
@@ -75,7 +75,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: '#/components/schemas/SignInRequest'
       responses:
         '200':
           description: Returns SUCCESS when the request is successful.
@@ -111,28 +111,16 @@ paths:
     post:
       operationId: AuthController_signOut
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignOutRequest'
       responses:
         '202':
-          description: Returns 202 when the token is invalidated successfully
-        '404':
-          description: Returns 404 when the token is not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  statusCode:
-                    type: number
-                    example: 404
-                  error:
-                    type: string
-                    example: Not Found
-                  message:
-                    type: string
-                    example: 'The resource with #7 is not available'
+          description: ''
       tags: *ref_0
-      security:
-        - bearer: []
   /api/v1/session/refresh:
     post:
       operationId: SessionController_refresh
@@ -170,7 +158,7 @@ paths:
       security:
         - bearer: []
   /api/v1/session/extend:
-    post:
+    put:
       operationId: SessionController_extend
       parameters: []
       requestBody:
@@ -181,7 +169,11 @@ paths:
               $ref: '#/components/schemas/ExtendRequest'
       responses:
         '200':
-          description: Returns OK when successful
+          description: Returns SUCCESS when the request is successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtendResponse'
         '400':
           description: Returns BAD_REQUEST when the payload is invalid or malformed.
           content:
@@ -221,7 +213,7 @@ components:
       description: Enter JWT auth token
       in: header
   schemas:
-    RegisterRequest:
+    SignUpRequest:
       type: object
       properties:
         username:
@@ -252,7 +244,7 @@ components:
       required:
         - uuid
         - username
-    LoginRequest:
+    SignInRequest:
       type: object
       properties:
         username:
@@ -295,6 +287,14 @@ components:
         - refreshToken
         - refreshTokenExpiresIn
         - roles
+    SignOutRequest:
+      type: object
+      properties:
+        refreshToken:
+          type: string
+          description: Deactivates the refresh token of the user
+      required:
+        - refreshToken
     RefreshResponse:
       type: object
       properties:
@@ -310,8 +310,20 @@ components:
     ExtendRequest:
       type: object
       properties:
-        uuid:
+        refreshToken:
           type: uuid
           example: d0f5c2c0-0f8a-4f1a-8f0a-2b5b8a0e1c1e
       required:
-        - uuid
+        - refreshToken
+    ExtendResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: aaa.bbb.ccc
+        expiresIn:
+          type: number
+          example: 3600
+      required:
+        - accessToken
+        - expiresIn

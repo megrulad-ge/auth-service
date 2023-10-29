@@ -1,6 +1,6 @@
-import { LoggerService } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 
-export const subscribeNodeSignals = (logger: LoggerService) => {
+export const subscribeNodeSignals = (logger: Logger) => {
   const signalsNames: NodeJS.Signals[] = ['SIGTERM', 'SIGINT', 'SIGHUP'];
 
   signalsNames.forEach((signalName) =>

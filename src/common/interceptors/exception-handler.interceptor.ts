@@ -1,18 +1,15 @@
 import {
-  BadRequestException,
   CallHandler,
   ExecutionContext,
   HttpException,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NestInterceptor,
-  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
-import { LoggerService } from '../setup/logger';
 import { RequestService } from '../setup/request';
-import { LoggerUtils } from '../setup/logger';
 import { QueryFailedError } from 'typeorm';
 
 @Injectable()
@@ -20,12 +17,12 @@ export class ExceptionInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
     const requestService = new RequestService(request);
-    const logger = new LoggerService(requestService);
+    const logger = new Logger(requestService.getRequestId());
 
     return next.handle().pipe(
       catchError((error) => {
         logger.error(
-          LoggerUtils.stringify({
+          JSON.stringify({
             message: error.message,
             stack: error.stack,
             name: error.name,

@@ -1,6 +1,5 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { Env } from '../env';
 import { CorsException } from '../exceptions/cors.exception';
 import { RequestService } from '../setup/request';
 

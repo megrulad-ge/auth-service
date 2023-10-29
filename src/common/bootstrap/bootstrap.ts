@@ -1,10 +1,9 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from '/src/app.module';
-import { LoggerService } from '../setup/logger';
 import { ConfigService } from '@nestjs/config';
 import { subscribeNodeSignals } from './signals';
 import { configureOrigin } from './configure-origin';
-import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
+import { ClassSerializerInterceptor, Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { RequestInterceptor } from '../interceptors/request.interceptor';
 import { ExceptionInterceptor } from '../interceptors/exception-handler.interceptor';
 import { SwaggerModule } from '@nestjs/swagger';
@@ -16,7 +15,7 @@ import { UserInterceptor } from '../interceptors/user.interceptor';
 
 export const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
-  const loggerService = app.get(LoggerService);
+  const loggerService = new Logger('Bootstrap');
   const configService = app.get(ConfigService);
   subscribeNodeSignals(loggerService);
   app.enableCors({

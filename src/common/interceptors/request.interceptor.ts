@@ -1,7 +1,6 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 import { RequestService } from '../setup/request';
 import { Observable } from 'rxjs';
-import { LoggerService, LoggerUtils } from '../setup/logger';
 import { Env } from '../env';
 import chalk from 'chalk';
 
@@ -15,9 +14,12 @@ export class RequestInterceptor implements NestInterceptor {
 
     const response = context.switchToHttp().getResponse();
     const requestService = new RequestService(request);
-    const logger = new LoggerService(requestService);
     const reqId = requestService.getRequestId();
+    const logger = new Logger(reqId);
     const started = Date.now();
+
+    // Inject logger into request
+    request.logger = logger;
 
     const whiteListedPaths = ['health', 'metrics', 'docs', 'swagger-ui'];
     const isWhiteListed = whiteListedPaths.some((path) => request.url.includes(path));
@@ -57,7 +59,7 @@ export class RequestInterceptor implements NestInterceptor {
     });
 
     isWhiteListed || logger.log(`${text.started} ${method} ${originalUrl} - ${userAgent} ${ip}`, reqId);
-    isWhiteListed || logger.log(`${text.payload} ${LoggerUtils.stringify(request.body)}`, reqId);
+    isWhiteListed || logger.log(`${text.payload} ${JSON.stringify(request.body)}`, reqId);
 
     return next.handle();
   }

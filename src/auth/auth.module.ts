@@ -1,24 +1,13 @@
-import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { forwardRef, Module } from '@nestjs/common';
 import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { privateKey, publicKey } from '../common/setup/keys/asymmetric.keys';
+import { SessionModule } from '/src/session/session.module';
 
 @Module({
-  imports: [
-    UsersModule,
-    JwtModule.register({
-      privateKey,
-      publicKey,
-      signOptions: {
-        expiresIn: '32m',
-        algorithm: 'RS256',
-      },
-    }),
-  ],
+  imports: [UsersModule, forwardRef(() => SessionModule)],
+  controllers: [AuthController],
   providers: [AuthService],
   exports: [AuthService],
-  controllers: [AuthController],
 })
 export class AuthModule {}

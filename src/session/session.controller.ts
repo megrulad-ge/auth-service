@@ -1,6 +1,6 @@
-import { ApiBearerAuth, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { Controller, Post, UseGuards, HttpCode, HttpStatus, Body } from '@nestjs/common';
-import { AuthUser } from '/common/decorators/user.decorator';
+import { ApiBearerAuth, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { Body, Controller, HttpCode, HttpStatus, Post, Put, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { AuthUser } from '/src/common/decorators/auth-user.decorator';
 import { ApiBadRequestResponse, ApiOkResponse } from '/common/decorators';
 import { AuthGuard } from '../auth/guards/auth.gueard';
 import { SessionService } from './session.service';
@@ -9,6 +9,8 @@ import { UserClaims } from '../users/user.type';
 import { RefreshResponse } from '/src/session/response/refresh.response';
 import { ExtendRequest } from '/src/session/request/extend.request';
 import { ExtendResponse } from '/src/session/response/extend.response';
+import { futureDate } from '/common/utils/date.utils';
+import ms from 'ms';
 
 @ApiTags('Session')
 @Controller('session')
@@ -29,16 +31,20 @@ export class SessionController {
     return RefreshResponse.from(this.authService.signAccessToken(uuid, roles));
   }
 
-  @Post('extend')
+  @Put('extend')
   @ApiBadRequestResponse()
   @ApiUnauthorizedResponse({ description: 'Returns 401 when refreshToken is invalid or expired' })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Returns OK when successful' })
-  extend(@Body() { uuid }: ExtendRequest): ExtendResponse {
-    // TODO
-    // Fetch user details from DB
-    // Extend session
-    const role = ['role'];
+  @ApiOkResponse(ExtendResponse)
+  async extend(@Body() { refreshToken }: ExtendRequest): Promise<ExtendResponse> {
+    const session = await this.sessionService.getBySessionUUID(refreshToken);
 
-    return ExtendResponse.from(this.authService.signAccessToken(uuid, role));
+    if (!session) throw new UnauthorizedException('Invalid/Expired refreshToken');
+
+    const roles = session.user.roles.map(({ role }) => role.name);
+    const expirationDate = futureDate(ms(process.env.REFRESH_TOKEN_EXPIRES_IN));
+
+    await this.sessionService.updateTimestamp(refreshToken, expirationDate);
+
+    return ExtendResponse.from(this.authService.signAccessToken(session.user.uuid, roles));
   }
 }
