@@ -14,8 +14,7 @@ export class RequestInterceptor implements NestInterceptor {
 
     const response = context.switchToHttp().getResponse();
     const requestService = new RequestService(request);
-    const reqId = requestService.getRequestId();
-    const logger = new Logger(reqId);
+    const logger = new Logger(requestService.getRequestId());
     const started = Date.now();
 
     // Inject logger into request
@@ -55,11 +54,11 @@ export class RequestInterceptor implements NestInterceptor {
       const delta = ended - started;
       const { statusCode: code } = response;
       const logText = `${text.completed} ${method} ${code} in ${delta}ms ${originalUrl} - ${userAgent} ${ip}`;
-      isWhiteListed || logger.log(logText, reqId);
+      isWhiteListed || logger.log(logText);
     });
 
-    isWhiteListed || logger.log(`${text.started} ${method} ${originalUrl} - ${userAgent} ${ip}`, reqId);
-    isWhiteListed || logger.log(`${text.payload} ${JSON.stringify(request.body)}`, reqId);
+    isWhiteListed || logger.log(`${text.started} ${method} ${originalUrl} - ${userAgent} ${ip}`);
+    isWhiteListed || logger.log(`${text.payload} ${JSON.stringify(request.body)}`);
 
     return next.handle();
   }

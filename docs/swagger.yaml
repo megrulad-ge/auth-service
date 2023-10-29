@@ -1,14 +1,5 @@
 openapi: 3.0.0
 paths:
-  /api/v1/profile:
-    get:
-      operationId: AppController_getProfile
-      parameters: []
-      responses:
-        '200':
-          description: ''
-      security:
-        - bearer: []
   /api/v1/health:
     get:
       operationId: HealthController_getHealth
@@ -121,6 +112,17 @@ paths:
         '202':
           description: ''
       tags: *ref_0
+  /api/v1/users/profile:
+    get:
+      operationId: UsersController_getProfile
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Users
+      security:
+        - bearer: []
   /api/v1/session/refresh:
     post:
       operationId: SessionController_refresh
