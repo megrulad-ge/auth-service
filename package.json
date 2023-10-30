@@ -127,6 +127,7 @@
       "src/common/bootstrap/.*",
       "src/common/setup/seeder/.*",
       "src/common/setup/config/.*",
+      "src/common/exceptions/.*",
       ".*\\.d\\.ts$",
       ".*\\.interceptor\\.ts$",
       ".*\\.module\\.ts$",
