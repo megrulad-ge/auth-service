@@ -1,5 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 import { RequestService } from '../setup/request';
+import { ExpressRequest } from '/common/types';
 import { Observable } from 'rxjs';
 import { Env } from '../env';
 import chalk from 'chalk';
@@ -7,7 +8,7 @@ import chalk from 'chalk';
 @Injectable()
 export class RequestInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<ExpressRequest>();
     if (!RequestService.hasRequestId(request)) {
       RequestService.injectRequestId(request);
     }
@@ -20,7 +21,7 @@ export class RequestInterceptor implements NestInterceptor {
     // Inject logger into request
     request.logger = logger;
 
-    const whiteListedPaths = ['health', 'metrics', 'docs', 'swagger-ui'];
+    const whiteListedPaths = ['health', 'docs', 'swagger-ui'];
     const isWhiteListed = whiteListedPaths.some((path) => request.url.includes(path));
 
     const text = {

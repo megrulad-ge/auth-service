@@ -1,3 +1,5 @@
+import { JwtPayload } from 'jsonwebtoken';
+
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
   PENDING = 'PENDING',
@@ -10,7 +12,7 @@ export enum RoleStatus {
   OPEN = 'OPEN',
 }
 
-export type UserClaims = {
+export type UserClaims = JwtPayload & {
   uuid: string;
   roles: string[];
   iat: number;

@@ -181,7 +181,7 @@ paths:
 info:
   title: Auth Service
   description: Authentication service
-  version: '1.0'
+  version: 0.0.1
   contact: {}
 tags: []
 servers: []

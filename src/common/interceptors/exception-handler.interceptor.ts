@@ -1,16 +1,16 @@
-import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { catchError, Observable } from 'rxjs';
 import { Env } from '/common/env';
+import { ExpressRequest } from '/common/types';
 
 @Injectable()
 export class ExceptionInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const request = context.switchToHttp().getRequest();
-    const logger = request.logger as Logger;
+    const request = context.switchToHttp().getRequest<ExpressRequest>();
 
     return next.handle().pipe(
       catchError((error) => {
-        logger.error(this.formatError(error) + '\n' + error.stack);
+        request.logger.error(this.formatError(error) + '\n' + error.stack);
 
         throw error;
       }),

@@ -21,8 +21,8 @@ describe('SeederService', () => {
       imports: [SetupModule, TypeOrmModule.forFeature([Seed, Role, User, RoleMapping])],
       providers: [SeederService, InsertDefaultRoles, CreateSuperUser],
     }).compile();
-    connection = module.get<DataSource>(DataSource);
-    service = module.get<SeederService>(SeederService);
+    connection = module.get(DataSource);
+    service = module.get(SeederService);
     usersRepository = connection.getRepository(User);
     rolesRepository = connection.getRepository(Role);
   });

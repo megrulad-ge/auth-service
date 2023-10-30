@@ -7,7 +7,7 @@ ENV BUILD_ENV=${BUILD_ENV:-production}
 WORKDIR /service
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --production
 COPY . .
 RUN npm run build
 

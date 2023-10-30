@@ -7,7 +7,6 @@ import { Role } from '/src/roles/entities/role.entity';
 import { RoleMapping } from '/src/users/entities/role-mapping.entity';
 import { User } from '/src/users/entities/user.entity';
 import { UserStatus } from '/src/users/user.type';
-import * as process from 'process';
 import { PasswordUtils } from '/common/utils';
 
 @Injectable()
