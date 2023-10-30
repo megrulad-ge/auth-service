@@ -177,4 +177,13 @@ describe('AuthController', () => {
       expect(warn).toHaveBeenCalled();
     });
   });
+
+  describe('.well-known/public-key', () => {
+    it('should return the public key', async () => {
+      const response = controller.getPublicKey();
+
+      // Expecting that key pairs are generated for tests
+      expect(response).toMatch(/-----BEGIN PUBLIC KEY-----/);
+    });
+  });
 });

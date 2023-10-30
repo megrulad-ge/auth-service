@@ -19,7 +19,7 @@ paths:
                     example: alive
       tags:
         - Health
-  /api/v1/sign/up:
+  /api/v1/sign-up:
     post:
       operationId: AuthController_signUp
       parameters: []
@@ -50,7 +50,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
       tags: &ref_0
         - Authentication
-  /api/v1/sign/in:
+  /api/v1/sign-in:
     post:
       operationId: AuthController_signIn
       parameters: []
@@ -79,6 +79,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Returns NOT_FOUND when the user does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '422':
           description: Returns UNPROCESSABLE_ENTITY when the user is not active
           content:
@@ -86,7 +92,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       tags: *ref_0
-  /api/v1/sign/out:
+  /api/v1/sign-out:
     post:
       operationId: AuthController_signOut
       parameters: []
@@ -99,6 +105,14 @@ paths:
       responses:
         '202':
           description: Returns ACCEPTED when the sign out request is successful
+      tags: *ref_0
+  /api/v1/.well-known/public-key:
+    get:
+      operationId: AuthController_getPublicKey
+      parameters: []
+      responses:
+        '200':
+          description: Returns the public key used to verify the JWT signature
       tags: *ref_0
   /api/v1/users/profile:
     get:

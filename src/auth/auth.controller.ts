@@ -1,7 +1,10 @@
+import ms from 'ms';
 import {
   BadRequestException,
   Body,
   Controller,
+  Get,
+  Header,
   HttpCode,
   HttpStatus,
   Logger,
@@ -21,18 +24,18 @@ import { SignOutRequest } from '/src/auth/request/sign-out.request';
 import { UserAgent } from '/common/decorators/user-agent.decorator';
 import { futureDate } from '/common/utils/date.utils';
 import { CtxLogger } from '/common/decorators/ctx-logger.decorator';
-import { ApiAcceptedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiAcceptedResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { ApiConflictResponse } from '/common/decorators/open-api-conflict-response.decorator';
 import { ApiUnauthorizedResponse } from '/common/decorators/open-api-unauthorized-response.decorator';
 import { ApiUnprocessableEntityResponse } from '/common/decorators/open-api-unprocessable-response.decorator';
 import { ApiBadRequestResponse } from '/common/decorators/open-api-bad-request.decorator';
 import { ApiCreatedResponse } from '/common/decorators/open-api-created-response.decorator';
 import { ApiOkResponse } from '/common/decorators/open-api-ok-response.decorator';
-import ms from 'ms';
 import { ApiNotFoundResponse } from '/common/decorators/open-api-not-found-response.decorator';
+import { publicKey } from '/common/setup/keys/asymmetric.keys';
 
 @ApiTags('Authentication')
-@Controller('sign')
+@Controller()
 export class AuthController {
   constructor(
     private readonly usersService: UsersService,
@@ -40,7 +43,7 @@ export class AuthController {
     private readonly sessionService: SessionService,
   ) {}
 
-  @Post('up')
+  @Post('sign-up')
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse({ type: SignUpResponse })
   @ApiConflictResponse({ description: 'Returns UNPROCESSABLE_ENTITY when the user already exists.' })
@@ -56,7 +59,7 @@ export class AuthController {
     return SignUpResponse.from(userEntity);
   }
 
-  @Post('in')
+  @Post('sign-in')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: SignInResponse })
   @ApiNotFoundResponse({ description: 'Returns NOT_FOUND when the user does not exist.' })
@@ -87,10 +90,19 @@ export class AuthController {
     });
   }
 
-  @Post('out')
+  @Post('sign-out')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiAcceptedResponse({ description: 'Returns ACCEPTED when the sign out request is successful' })
   async signOut(@Body() payload: SignOutRequest, @CtxLogger() logger: Logger) {
     await this.sessionService.remove(payload.refreshToken).catch((error) => logger.warn(error.message));
+  }
+
+  @Get('.well-known/public-key')
+  @HttpCode(HttpStatus.OK)
+  @Header('Cache-Control', 'none')
+  @Header('Content-Type', 'text/plain')
+  @ApiOkResponse({ description: 'Returns the public key used to verify the JWT signature' })
+  getPublicKey() {
+    return publicKey.toString();
   }
 }

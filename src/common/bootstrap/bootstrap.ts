@@ -21,8 +21,8 @@ export const bootstrap = async () => {
   app.enableCors({
     origin: configureOrigin,
     methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
-    allowedHeaders: 'Authorization, Content-Type',
-    exposedHeaders: 'Authorization',
+    allowedHeaders: 'Authorization, Content-Type, Accept',
+    exposedHeaders: 'Authorization, Content-Type',
     credentials: true,
   });
   app.useLogger(loggerService);
