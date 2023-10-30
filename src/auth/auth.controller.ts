@@ -24,7 +24,7 @@ import { SignOutRequest } from '/src/auth/request/sign-out.request';
 import { UserAgent } from '/common/decorators/user-agent.decorator';
 import { futureDate } from '/common/utils/date.utils';
 import { CtxLogger } from '/common/decorators/ctx-logger.decorator';
-import { ApiAcceptedResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiAcceptedResponse, ApiTags } from '@nestjs/swagger';
 import { ApiConflictResponse } from '/common/decorators/open-api-conflict-response.decorator';
 import { ApiUnauthorizedResponse } from '/common/decorators/open-api-unauthorized-response.decorator';
 import { ApiUnprocessableEntityResponse } from '/common/decorators/open-api-unprocessable-response.decorator';
