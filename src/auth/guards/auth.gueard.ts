@@ -1,13 +1,13 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { privateKey } from '/common/setup/keys/asymmetric.keys';
 import jsonwebtoken from 'jsonwebtoken';
-import { Observable } from 'rxjs';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const authorization = request.headers.authorization;
+  canActivate(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest<Request>();
+    const authorization = request.header('Authorization');
     if (!authorization) throw new UnauthorizedException('Authorization header is missing');
 
     const token = authorization.replace('Bearer ', '');
