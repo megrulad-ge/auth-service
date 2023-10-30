@@ -7,7 +7,7 @@ import { RequestHeader } from './request.enum';
 @Injectable()
 export class RequestService {
   private static readonly REQUEST_ID_HEADER = RequestHeader.RequestId;
-  private static readonly validationSchema = Joi.string().guid({ version: 'uuidv4' });
+  private static readonly validationSchema = Joi.string().min(16).max(64);
 
   public constructor(private readonly request: Request) {}
 
