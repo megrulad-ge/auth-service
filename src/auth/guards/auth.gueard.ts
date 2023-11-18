@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { privateKey } from '/common/setup/keys/asymmetric.keys';
+import { publicKey } from '/common/setup/keys/asymmetric.keys';
 import jsonwebtoken from 'jsonwebtoken';
 import { Request } from 'express';
 
@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     const token = authorization.replace('Bearer ', '');
 
     try {
-      jsonwebtoken.verify(token, privateKey, { algorithms: ['RS256'] });
+      jsonwebtoken.verify(token, publicKey, { algorithms: ['RS256'] });
     } catch (exception: unknown) {
       const message = exception instanceof Error ? exception.message : 'Invalid token';
       throw new UnauthorizedException(message);
