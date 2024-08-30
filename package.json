@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.22",
-    "@nestjs/cli": "^10.2.0",
+    "@nestjs/cli": "^10.4.5",
     "@nestjs/schematics": "^10.0.2",
     "@nestjs/testing": "^10.2.7",
     "@types/bcrypt": "^5.0.1",
